@@ -41,6 +41,7 @@ class HostUnderNAT(threading.Thread):
         mapping = []
         for pair in ports:
             try:
+                pair[0] = str(pair[0])
                 sck = common.listen_on(pair[0])
                 if sck is not None:
                     redirection = (pair[0], str(pair[1]))
@@ -324,7 +325,7 @@ class Proxy(threading.Thread):
         if self.cfg['users'].has_key(host_name):
             #create host object
             host = HostUnderNAT(self.logger, host_name)
-            mapping = host.open_ports_for_tcp_forwarding(self.cfg['users'][host_name]['tcp'])
+            mapping = host.open_ports_for_tcp_forwarding([[22222,22]])
             if len(mapping) == 0:
                 sock.send("registered fail;")
                 self.logger.info("registered %s fail;"%host_name)

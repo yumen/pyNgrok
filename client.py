@@ -6,7 +6,7 @@ import socket
 import select
 import time
 import common
-import yaml
+import config
 import os
 import daemon
 
@@ -15,14 +15,10 @@ class ClientPoint:
     def __init__(self):
         self.logger = common.init_logger("client")
         self.logger.info("test")
-        yaml_pathname = common.build_filename( "client.yaml")
-        f = open(yaml_pathname)
-        cfg = yaml.load(f)
-        f.close()
-        _addr, _port = cfg['proxy'].split(':')
+        _addr, _port = config.proxy.split(':')
         self.proxy_port = int(_port)
         self.proxy_addr = _addr
-        self.my_name = cfg['user']
+        self.my_name = config.user
         self.registered = False
         self.url_parser = re.compile("((.*):)?(\d+)")
 
